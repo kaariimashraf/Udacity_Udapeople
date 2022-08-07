@@ -78,12 +78,11 @@ jobs:
           command: |
              cd frontend
              npm install
-             npm audit fix --audit-level=critical --force
              npm audit --audit-level=critical
       - slack/notify:
           event: fail
           template: basic_fail_1
-          
+
   Scan-backend:
     docker:
       - image: cimg/node:13.8.0
@@ -99,6 +98,9 @@ jobs:
              npm audit fix --audit-level=critical --force
              npm audit fix --audit-level=critical --force
              npm audit --audit-level=critical
+      - slack/notify:
+          event: pass
+          template: basic_success_1
 workflows:
   myworkflow:
     jobs:
