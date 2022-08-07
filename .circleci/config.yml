@@ -76,7 +76,7 @@ jobs:
           command: |
              cd frontend
              npm install
-             npm audit
+             npm audit --audit-level=critical
   Scan-backend:
     docker:
       - image: cimg/node:13.8.0
@@ -89,8 +89,7 @@ jobs:
           command: |
              cd backend
              npm install
-             npm audit
-
+             npm audit --audit-level=critical
 workflows:
   myworkflow:
     jobs:
