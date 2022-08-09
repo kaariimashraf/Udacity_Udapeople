@@ -48,9 +48,10 @@ commands:
           - run:
               name: Install Ansible
               command:  |
-                 sudo apt install --assume-yes software-properties-common
-                 sudo add-apt-repository --yes --update ppa:ansible/ansible
-                 sudo apt install ansible
+                 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                 python3 get-pip.py --user
+                 python3 -m pip install --user ansible
+                 
 
 
 jobs:
