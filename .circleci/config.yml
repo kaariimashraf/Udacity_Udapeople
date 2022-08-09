@@ -189,8 +189,27 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - run : exit 1
+      #- run : exit 1
       - destroy-environment 
+
+  configure-infrastructure:
+    docker:
+       - image: cimg/node:13.8.0
+    steps:
+      - checkout
+      - install-ansible
+      - add_ssh_keys:
+          fingerprints:
+            - "43:87:53:b4:bc:17:1c:e2:73:24:cc:79:76:77:c2:99"
+      - attach workspace:
+          at: ~/
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            cat inventory.txt
+            ansible-playbook -i inventory.txt configure-server.yml
+      - destroy-enviroment      
       
 workflows:
   myworkflow:
@@ -214,5 +233,7 @@ workflows:
           filters:
             branches:
               only: [master]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
 
   
