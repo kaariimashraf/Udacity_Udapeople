@@ -32,7 +32,7 @@ commands:
            aws s3 rm s3://udapeople-<< parameters.WorkflowID >> --recursive
            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WorkflowID >>
 
-  Install-aws-cli:
+  install-AWScli:
         description: Install aws cli
         steps:
           - run:
@@ -42,7 +42,7 @@ commands:
                 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
                 unzip awscliv2.zip
                 sudo ./aws/install
-  Install-ansible:
+  install-ansible:
         description: Install Ansible
         steps:
           - run:
@@ -118,7 +118,7 @@ jobs:
              npm install
              npm run test
 
-  Scan-frontend:
+  scan-frontend:
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -126,7 +126,7 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
-          name:  Scan frontend
+          name:  scan frontend
           command: |
              cd frontend
              npm install
@@ -134,7 +134,7 @@ jobs:
              npm audit --audit-level=critical
       
 
-  Scan-backend:
+  scan-backend:
     docker:
       - image: cimg/node:13.8.0
     steps:
@@ -142,7 +142,7 @@ jobs:
       - restore_cache:
           keys: [backend-build]
       - run:
-          name:  Scan backend
+          name:  scan backend
           command: |
              cd backend
              npm install
@@ -202,11 +202,16 @@ workflows:
       - test-backend:
             requires:
               - build-backend
-      - Scan-frontend:
+      - scan-frontend:
             requires:
               - build-frontend
-      - Scan-backend:
+      - scan-backend:
             requires:
               - build-backend
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [master]
 
   
