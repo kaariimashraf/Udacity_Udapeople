@@ -193,7 +193,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-       - image: cimg/base:latest
+       - image: cimg/base:stable
     steps:
       - checkout
       - install-awscli
