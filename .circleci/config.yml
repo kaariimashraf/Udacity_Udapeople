@@ -1,7 +1,7 @@
 version: 2.1
 orbs: 
   slack: circleci/slack@4.10.1
-  
+
 commands:
   notify_on_failure:
     description: Notify on slack when a job fails
@@ -16,17 +16,43 @@ commands:
           event: pass
           template: basic_success_1
 
-  # destroy-environment:
-  #   description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-  #   parameters:
-  #     # Add parameter here   
-  #   steps:
-  #     - run:
-  #         name: Destroy environments
-  #         when: on_fail
-  #         command: |
-  #           # Your code here
-  #           exit 1
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a WORKFLOW_ID.
+    parameters:
+       WorkflowID : 
+          description: WorkflowID
+          default: ${CIRCLE_WORKFLOW_ID:0:7}
+          Type: String
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+           aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.WorkflowID >>
+           aws s3 rm s3://udapeople-<< parameters.WorkflowID >> --recursive
+           aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.WorkflowID >>
+
+  Install-aws-cli:
+        description: Install aws cli
+        steps:
+          - run:
+              name: Install aws cli
+              command:  |
+                sudo apt install unzip
+                curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                unzip awscliv2.zip
+                sudo ./aws/install
+  Install-ansible:
+        description: Install Ansible
+        steps:
+          - run:
+              name: Install Ansible
+              command:  |
+                 sudo apt update
+                 sudo apt install software-properties-common
+                 sudo add-apt-repository --yes --update ppa:ansible/ansible
+                 sudo apt install ansible
+
 
 jobs:
   build-frontend:
@@ -123,6 +149,47 @@ jobs:
              npm audit fix --audit-level=critical --force
              npm audit fix --audit-level=critical --force
              npm audit --audit-level=critical
+
+  deploy-infrastructure:
+    docker:
+      - image : amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum -y install tar gzip
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --tags project=udapeople \
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID= "${CIRCLE_WORKFLOW_ID:0:7}"  
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=udapeople \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+                BACKEND_PRIVATE_IP=$(aws ec2 describe-instances \
+                --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --query 'Reservations[*].Instances[*].PrivateIpAddress' \
+                --output text)
+                BACKEND_PUBLIC_IP=$(aws ec2 describe-addresses \
+                --filters "Name=private-ip-address,Values=$BACKEND_PRIVATE_IP" \
+                --query 'Addresses[*].PublicIp' \
+                --output text)
+                echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
+                cat  $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt          
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+      - destroy-environment 
       
 workflows:
   myworkflow:
