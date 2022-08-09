@@ -37,6 +37,6 @@ Resources:
           Value: !Sub backend-${ID}
 
   MyEIP: #Using Elastic IP Allows us to fix the public IP of the EC2 instance
-  Type: AWS::EC2::EIP
-  Properties:
-    InstanceId: !Ref EC2Instance
+    Type: AWS::EC2::EIP
+    Properties:
+        InstanceId: !Ref EC2Instance
