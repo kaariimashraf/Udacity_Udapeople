@@ -299,6 +299,8 @@ jobs:
           name: Install dependencies
           command: |
               cd backend
+              sudo apt-get update
+              sudo apt-get -y install yum
               yum -y install tar gzip
               npm install
               curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
