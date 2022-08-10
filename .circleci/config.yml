@@ -298,7 +298,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-              cd backend
               sudo apt-get update
               sudo apt-get -y install yum
               yum -y install tar gzip
