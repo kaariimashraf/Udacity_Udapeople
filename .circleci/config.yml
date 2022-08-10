@@ -264,9 +264,9 @@ jobs:
           name: Get backend url
           command: |
             cd .circleci/ansible
-            export BACKEND_PUBLIC_IP = $(tail -1 inventory.txt)
-            export API_URL = "http://${BACKEND_PUBLIC_IP}:3030"
-            echo "API_URL" = ${API_URL}
+            export BACKEND_PUBLIC_IP=$(tail -1 inventory.txt)
+            export API_URL="http://${BACKEND_PUBLIC_IP}:3030"
+            echo "API_URL"=${API_URL}
             cd frontend
             echo API_URL="http://${BACKEND_PUBLIC_IP}:3030" >> frontend/.env
             cat frontend/.env
