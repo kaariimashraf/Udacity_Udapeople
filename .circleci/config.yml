@@ -284,7 +284,7 @@ jobs:
 
   deploy-backend:
     docker:
-       - image: cimg/node:13.8.0
+       - image: cimg/base:stable
     steps:
       - checkout
       - install-awscli
@@ -300,7 +300,8 @@ jobs:
           command: |
               sudo apt-get update
               sudo apt-get -y install tar gzip
-              npm install
+              curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+              sudo apt-get install -y nodejs
               
       - run:
           name: package backend
