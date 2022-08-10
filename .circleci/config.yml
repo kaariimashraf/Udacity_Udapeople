@@ -59,8 +59,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS = $(curl -k https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            if(( $SUCCESS==1 )); 
+            _SUCCESS=$(curl -k https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            if(( $_SUCCESS==1 )); 
             then
               cd ~/project/backend
               npm install
@@ -253,6 +253,8 @@ jobs:
       - install-awscli
       - restore_cache:
            keys: [frontend-build]
+      - attach_workspace:
+            at: ~/
       - run:
           name: Install Dependencies
           command: |
