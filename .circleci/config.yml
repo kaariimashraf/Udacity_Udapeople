@@ -197,7 +197,7 @@ jobs:
                 --filters "Name=private-ip-address,Values=$BACKEND_PRIVATE_IP" \
                 --query 'Addresses[*].PublicIp' \
                 --output text)
-                echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
+                echo -e "\n$BACKEND_PUBLIC_IP" >> .circleci/ansible/inventory.txt
                 cat  .circleci/ansible/inventory.txt          
       - persist_to_workspace:
           root: ~/
