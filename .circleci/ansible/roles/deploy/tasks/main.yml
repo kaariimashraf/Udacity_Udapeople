@@ -14,12 +14,17 @@
 #     cd ~/backend-app
 #     npm i
 
+- name: "install node dependencies"
+  shell: |
+    cd backend
+    sudo apt-get npm install
+
+
 - name: "Execute node app with pm2"
   shell: |
     cd backend
-    sudo npm install
     sudo pm2 stop default
-    sudo pm2 start npm --start
+    sudo pm2 start npm -- startsudo
   register: execute_node
 
 - name: "print message"
