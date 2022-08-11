@@ -316,6 +316,10 @@ jobs:
             ls
             cd .circleci/ansible/roles/deploy/files
             ls
+            cd ~
+            ls
+            cd /
+            ls
                 
       - run:
           name: Deploy backend
