@@ -316,8 +316,7 @@ jobs:
             echo BackendDir
             ls backend 
             echo HOmmmme
-            ls ~
-                
+            ls ~      
       - run:
           name: Deploy backend
           command: |
