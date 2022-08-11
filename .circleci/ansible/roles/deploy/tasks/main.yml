@@ -21,7 +21,6 @@
 
 - name: "Execute node app with pm2"
   shell: |
-    cd backend
     sudo pm2 stop default
     sudo pm2 start npm -- startsudo
   register: execute_node

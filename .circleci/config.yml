@@ -313,6 +313,7 @@ jobs:
             mkdir -p .circleci/ansible/roles/deploy/files
             tar -C backend -czvf artifact.tar.gz .
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
+            ls
             echo BackendDir
             ls backend 
             echo HOmmmme
