@@ -16,7 +16,6 @@
 
 - name: "install node dependencies"
   shell: |
-    cd backend
     sudo apt-get npm install
 
 
@@ -30,5 +29,3 @@
 - name: "print message"
   debug: 
     msg: "{{ execute_node.stdout_lines }}"
-
-

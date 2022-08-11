@@ -324,8 +324,8 @@ jobs:
             echo "Contents  of the inventory.txt file is $(tail -1 inventory.txt)"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml 
-      # - destroy-environment
-      # - revert-migrations 
+      - destroy-environment
+      - revert-migrations 
         
 
       
