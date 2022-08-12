@@ -340,8 +340,10 @@ jobs:
           name: Install dependencies
           command: |
               sudo apt-get update -y
+              sudo apt-get install npm
               curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-              sudo apt-get install -y nodejs    
+              sudo apt-get install -y nodejs
+
       # - run:
       #     name: Get backend url
       #     command: |
@@ -372,8 +374,8 @@ jobs:
             else
               exit 1
             fi
-      # - destroy-environment
-      # - revert-migrations        
+      - destroy-environment
+      - revert-migrations        
 
       
 workflows:
