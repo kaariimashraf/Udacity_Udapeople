@@ -342,15 +342,18 @@ jobs:
               sudo apt-get update -y
               curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
               sudo apt-get install -y nodejs    
-      - run:
-          name: Get backend url
-          command: |
-            export BACKEND_PUBLIC_IP=$(tail -1 .circleci/ansible/inventory.txt)
-            export API_URL="http://${BACKEND_PUBLIC_IP}:3030"
-            echo "${API_URL}"
+      # - run:
+      #     name: Get backend url
+      #     command: |
+      #       export BACKEND_PUBLIC_IP=$(tail -1 .circleci/ansible/inventory.txt)
+      #       export API_URL="http://${BACKEND_PUBLIC_IP}:3030"
+      #       echo "${API_URL}"
       - run:
           name: Backend smoke test.
           command: |
+              export BACKEND_PUBLIC_IP=$(tail -1 .circleci/ansible/inventory.txt)
+              export API_URL="http://${BACKEND_PUBLIC_IP}:3030"
+              echo "${API_URL}"
               if curl "${API_URL}/api/status" | grep "ok"
               then
                   exit 0
