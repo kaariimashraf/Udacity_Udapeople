@@ -17,7 +17,7 @@
 - name: "install node dependencies"
   shell: |
     sudo apt-get update -y
-    sudo apt-get npm install
+    sudo apt-get install npm 
 
 
 - name: "Execute node app with pm2"
