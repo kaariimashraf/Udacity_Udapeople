@@ -16,7 +16,7 @@
 
 - name: "install node dependencies"
   shell: |
-    sudo apt-get update
+    sudo apt-get update -y
     sudo apt-get npm install
 
 
