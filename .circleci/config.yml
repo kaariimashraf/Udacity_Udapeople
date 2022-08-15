@@ -371,9 +371,10 @@ jobs:
       - revert-migrations        
   cloudfront-update:
     docker:
-      - image : amazon/aws-cli
+         - image: cimg/base:stable
     steps:
       - checkout
+      - install-awscli
       - run:
           name: Install dependencies
           command: |
