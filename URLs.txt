@@ -1,5 +1,5 @@
 URL01 : https://github.com/kaariimashraf/Udacity_Udapeople
-URL02 : 
+URL02 : http://udapeople-02eea79.s3-website-us-east-1.amazonaws.com/
 URL03 : http://du2wsv8vcys7d.cloudfront.net
-
-52.86.83.237
+URL04 : http://52.86.83.237:3030/api/status
+URL05 : http://ec2-35-175-173-197.compute-1.amazonaws.com:9090/
